@@ -31,7 +31,8 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    resource_holder.OrderLists();
     std::cout << "Total distance to be travelled is: " << resource_holder.GetTotalDistance() << std::endl;
-
+    std::cout << "The similarity score between the two lists is: " << resource_holder.GetSimilarityScore() << std::endl;
     return 0;
 }

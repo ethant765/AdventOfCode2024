@@ -33,12 +33,19 @@ class ResourceHolder {
          * @return uint32_t 
          */
         uint32_t GetTotalDistance();
-    private:
+
+        /**
+         * @brief Get the Similarity Score of the two lists
+         * 
+         * @return uint32_t 
+         */
+        uint32_t GetSimilarityScore();
+
         /**
          * @brief Orders elements in each list from smallest to largest
          */
         void OrderLists();
-
+    private:
         /**
          * @brief Object that stores list one
          */

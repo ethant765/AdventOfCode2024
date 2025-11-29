@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdint>
 #include <algorithm>
+#include <numeric>
 
 ResourceHolder::ResourceHolder() {}
 
@@ -20,7 +21,6 @@ uint32_t ResourceHolder::GetTotalDistance() {
         return 0;
     }
 
-    OrderLists();
     uint32_t total_distance = 0;
     for(size_t i = 0; i < list_one_.size(); i++) {
         if(list_one_[i] > list_two_[i]) {
@@ -32,6 +32,20 @@ uint32_t ResourceHolder::GetTotalDistance() {
         //std::cout << "added values: " << list_one_[i] << ", " << list_two_[i] << ". current total distance: " << total_distance << std::endl;
     }
     return total_distance;
+}
+
+uint32_t ResourceHolder::GetSimilarityScore() {
+    std::vector<uint32_t> duplicates;
+    for(uint32_t first_val : list_one_) {
+        int counter = 0;
+        for(uint32_t second_val : list_two_) {
+            if(first_val == second_val) {
+                counter++;
+            }
+        }
+        duplicates.push_back(counter * first_val);
+    }
+    return std::accumulate(duplicates.begin(), duplicates.end(), 0);
 }
 
 void ResourceHolder::OrderLists() {
