@@ -30,9 +30,10 @@ class ResourceHandler {
         /**
          * @brief Calculates and returns the number of safe lines stored within the classes resources_ object
          * 
+         * @param use_problem_dampener
          * @return uint32_t 
          */
-        uint32_t GetNumOfSafeLevels();
+        uint32_t GetNumOfSafeLevels(const bool use_problem_dampener = false);
 
     private:
 
@@ -40,10 +41,11 @@ class ResourceHandler {
          * @brief Validates the passed line of values
          * 
          * @param line 
+         * @param use_problem_dampener
          * @return true 
          * @return false 
          */
-        bool ValidateLine(const std::vector<uint16_t>& line);
+        bool ValidateLine(const std::vector<uint16_t>& line, const bool use_problem_dampener);;
 
         /**
          * @brief compares if two passed values have a difference between the min and max difference allowance

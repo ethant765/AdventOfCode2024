@@ -20,7 +20,11 @@ int main(int argc, char *argv[]) {
         resource_handler.AddNewResourceLine(file_line);
     }
 
-    std::cout << "The number of safe levels is: " << resource_handler.GetNumOfSafeLevels() << std::endl;
+    bool use_problem_dampener = false;
+    std::cout << "The number of safe levels is: " << resource_handler.GetNumOfSafeLevels(use_problem_dampener) << std::endl;
+    
+    use_problem_dampener = true;
+    std::cout << "The number of safe levels with the problem dampener is: " << resource_handler.GetNumOfSafeLevels(use_problem_dampener) << std::endl;
 
     return 0;
 }
