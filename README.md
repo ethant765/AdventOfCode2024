@@ -25,3 +25,7 @@ Day 1 instructions can be found [here](https://adventofcode.com/2024/day/1)
 ## Day Two
 
 Day 2 instructions can be found [here](https://adventofcode.com/2024/day/2)
+
+## Day Three
+
+Day 3 instructions can be found [here](https://adventofcode.com/2024/day/3)
