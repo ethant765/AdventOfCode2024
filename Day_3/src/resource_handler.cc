@@ -15,10 +15,8 @@ void ResourceHandler::AddResource(const std::string& input) {
         std::vector<std::string> muls = RegexStrFinder(kRegexMatcher, allDosAndDonts[i]);
 
         if(allDosAndDonts[i].find(kDoCondition) != std::string::npos) {
-            std::cout << "True: " << allDosAndDonts[i] << std::endl << std::endl << std::endl;
             multiply_instruction = true;
         } else if (allDosAndDonts[i].find(kDontCondition) != std::string::npos) {
-            std::cout << "False: " << allDosAndDonts[i] << std::endl << std::endl << std::endl;
             multiply_instruction = false;
         } else {
             // should only occur on first string. Instructions are to Do
@@ -26,7 +24,6 @@ void ResourceHandler::AddResource(const std::string& input) {
                 std::cout << "ERROR: not in first iteration of input line and found a substring without a do or don't" << std::endl;
                 return;
             }
-            std::cout << "True: " << allDosAndDonts[i] << std::endl << std::endl << std::endl;
             multiply_instruction = true;
         }
 
@@ -51,13 +48,13 @@ uint64_t ResourceHandler::GetTotalMultiplications() {
 }
 
 uint64_t ResourceHandler::GetMultiplicationWithConditionals() {
-    uint64_t total = 0;
+    uint64_t total_do = 0;
     for(Instruction instruction : values_) {
         if(instruction.DoWeMultiply()) {
-            total += instruction.Mul();
+            total_do += instruction.Mul();
         }
     }
-    return total;
+    return total_do;
 }
 
 std::vector<std::string> ResourceHandler::RegexStrFinder(const std::string& regex_string, const std::string& input) {

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include <memory>
 
 int main(int argc, char *argv[]) {
@@ -13,15 +14,19 @@ int main(int argc, char *argv[]) {
     }
     std::string input_file = argv[1];
 
-    std::unique_ptr<ResourceHandler> resourceHandler = std::make_unique<ResourceHandler>();
+    
 
     // load input reasource
     std::ifstream file(input_file);
     std::string file_line;
+    // we want 1 long string for this challenge.
+    std::stringstream strstr;
     while(std::getline(file, file_line)) {
-        resourceHandler->AddResource(file_line);
+        strstr << file_line;
     }
 
+    std::unique_ptr<ResourceHandler> resourceHandler = std::make_unique<ResourceHandler>();
+    resourceHandler->AddResource(strstr.str());
     std::cout << "The total of uncorrupted data multiplications is: " << resourceHandler->GetTotalMultiplications() << std::endl;
     std::cout << "The total value with the additional conditional statements is: " << resourceHandler->GetMultiplicationWithConditionals() << std::endl;
 
