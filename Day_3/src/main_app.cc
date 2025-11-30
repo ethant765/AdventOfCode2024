@@ -14,8 +14,6 @@ int main(int argc, char *argv[]) {
     }
     std::string input_file = argv[1];
 
-    
-
     // load input reasource
     std::ifstream file(input_file);
     std::string file_line;
@@ -25,7 +23,7 @@ int main(int argc, char *argv[]) {
         strstr << file_line;
     }
 
-    std::unique_ptr<ResourceHandler> resourceHandler = std::make_unique<ResourceHandler>();
+    std::unique_ptr<day_three::ResourceHandler> resourceHandler = std::make_unique<day_three::ResourceHandler>();
     resourceHandler->AddResource(strstr.str());
     std::cout << "The total of uncorrupted data multiplications is: " << resourceHandler->GetTotalMultiplications() << std::endl;
     std::cout << "The total value with the additional conditional statements is: " << resourceHandler->GetMultiplicationWithConditionals() << std::endl;

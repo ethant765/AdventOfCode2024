@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     }
     std::string input_file = argv[1];
 
-    ResourceHolder resource_holder;
+    day_one::ResourceHolder resource_holder;
     
     // load input reasource
     std::ifstream file(input_file);

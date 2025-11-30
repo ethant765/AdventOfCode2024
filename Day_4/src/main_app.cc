@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     std::string input_file = argv[1];
-    std::unique_ptr<WordProcessor> word_processor = std::make_unique<WordProcessor>();
+    std::unique_ptr<day_four::WordProcessor> word_processor = std::make_unique<day_four::WordProcessor>();
     // load input reasource
     std::ifstream file(input_file);
     std::string file_line;

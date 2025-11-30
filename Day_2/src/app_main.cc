@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     }
     std::string input_file = argv[1];
 
-    ResourceHandler resource_handler;
+    day_two::ResourceHandler resource_handler;
     // load input reasource
     std::ifstream file(input_file);
     std::string file_line;
