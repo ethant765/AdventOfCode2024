@@ -32,7 +32,9 @@ int main(int argc, char *argv[]) {
 
     //resource_handler->Print();
 
-    std::cout << "The total value of middle numbers of the valid page orderings is: " << resource_handler->GetMiddlePageSum() << std::endl;
+    resource_handler->SortPages();
+    std::cout << "The total value of middle numbers of the valid page orderings is: " << resource_handler->GetValidMiddlePageSum() << std::endl;
+    std::cout << "The total value of middle numbers of the invalid page orderings is: " << resource_handler->GetInvalidMiddlePageSum() << std::endl;
 
     return 0;
 }

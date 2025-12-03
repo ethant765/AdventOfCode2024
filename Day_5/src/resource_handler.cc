@@ -30,11 +30,10 @@ namespace day_five {
         }
     }
 
-    uint64_t ResourceHandler::GetMiddlePageSum() {
+    uint64_t ResourceHandler::GetValidMiddlePageSum() {
         uint64_t sum_total = 0;
-        std::vector<size_t> valid_orderings = GetValidPageOrderingIndexes();
 
-        for(size_t i : valid_orderings) {
+        for(size_t i : valid_indexes_) {
             auto mid_point = page_orderings_[i].begin() + page_orderings_[i].size() / 2;
             sum_total += *mid_point;
         }
@@ -42,8 +41,50 @@ namespace day_five {
         return sum_total;
     }
 
-    std::vector<size_t> ResourceHandler::GetValidPageOrderingIndexes() {
+    uint64_t ResourceHandler::GetInvalidMiddlePageSum() {
+        uint64_t sum_total = 0;
+
+        for(size_t i : invalid_indexes_) {
+            std::vector<uint16_t> rearranged_ordering = RearrangeInvalid(i);
+            auto mid_point = rearranged_ordering.begin() + rearranged_ordering.size() / 2;
+            sum_total += *mid_point;
+        }
+
+        return sum_total;
+    }
+
+    std::vector<uint16_t> ResourceHandler::RearrangeInvalid(const size_t index_to_test) {
+        std::vector<uint16_t> new_order(page_orderings_[index_to_test].begin(), page_orderings_[index_to_test].end());
+
+        bool invalid = true;
+        while(invalid) {
+            bool switched = false;
+            for(size_t i = 1; i < new_order.size() && !switched; i++) {
+                uint16_t current = new_order[i];
+                for(long int j = i-1; j >= 0 && !switched; j--) {
+                    uint16_t prev = new_order[j];
+                    for(std::pair<uint16_t, uint16_t> rule : rules_) {
+                        if((rule.first == current) && (rule.second == prev)) {
+                            switched = true;
+                            new_order[i] = prev;
+                            new_order[j] = current;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if(!switched) {
+                invalid = false;
+            }
+        }
+
+        return new_order;
+    }
+
+    void ResourceHandler::SortPages() {
         valid_indexes_.clear();
+        invalid_indexes_.clear();
         std::vector<std::thread> threads;
 
         for(size_t i = 0; i < page_orderings_.size(); i++) {
@@ -54,8 +95,6 @@ namespace day_five {
         for(auto& thread : threads) {
             thread.join();
         }
-
-        return valid_indexes_;
     }
 
     void ResourceHandler::TestOrderingValid(const size_t index_to_test) {
@@ -76,9 +115,13 @@ namespace day_five {
         }
 
         // add valid items to list of indexes
-        if(valid) {
+        {
             std::scoped_lock lock(mutex_);
-            valid_indexes_.push_back(index_to_test);
+            if(valid) {
+                valid_indexes_.push_back(index_to_test);
+            } else {
+                invalid_indexes_.push_back(index_to_test);
+            }
         }
     }
 
