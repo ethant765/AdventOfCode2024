@@ -59,10 +59,24 @@ namespace day_five {
     }
 
     void ResourceHandler::TestOrderingValid(const size_t index_to_test) {
-        //TODO: implement
+        std::vector<uint16_t> page_ordering = page_orderings_[index_to_test];
+
+        bool valid = true;
+        for(size_t i = 1; i < page_ordering.size() && valid; i++) {
+            uint16_t current = page_ordering[i];
+            for(long int j = i-1; j >= 0 && valid; j--) {
+                uint16_t prev = page_ordering[j];
+                for(std::pair<uint16_t, uint16_t> rule : rules_) {
+                    if((rule.first == current) && (rule.second == prev)) {
+                        valid = false;
+                        break;
+                    }
+                }
+            }
+        }
 
         // add valid items to list of indexes
-        {
+        if(valid) {
             std::scoped_lock lock(mutex_);
             valid_indexes_.push_back(index_to_test);
         }
