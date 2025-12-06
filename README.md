@@ -37,3 +37,7 @@ Day 4 instructions can be found [here](https://adventofcode.com/2024/day/4)
 ## Day Five
 
 Day 5 instructions can be found [here](https://adventofcode.com/2024/day/5)
+
+## Day Six
+
+Day 6 instructions can be found [here](https://adventofcode.com/2024/day/6)
