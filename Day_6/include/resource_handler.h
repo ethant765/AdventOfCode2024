@@ -70,7 +70,7 @@ namespace day_six {
              * @return true 
              * @return false 
              */
-            bool CanGuardMove(const long int pos_x, const long int pos_y, const POSSIBLE_DIRECTIONS direction);
+            bool CanGuardMove(const long int pos_x, const long int pos_y, const POSSIBLE_DIRECTIONS direction, const std::vector<std::vector<char>>& test_map);
 
             /**
              * @brief Given the guards location and facing direction, will advise if the guard can exit the map
@@ -81,7 +81,7 @@ namespace day_six {
              * @return true 
              * @return false 
              */
-            bool CanGuardExit(const long int pos_x, const long int pos_y, const POSSIBLE_DIRECTIONS direction);
+            bool CanGuardExit(const long int pos_x, const long int pos_y, const POSSIBLE_DIRECTIONS direction, const std::vector<std::vector<char>>& test_map);
 
             /**
              * @brief Given the guards current direction, will predict the new direction they shall patroll
@@ -115,7 +115,7 @@ namespace day_six {
              * @param pos_x 
              * @param pos_y 
              */
-            void PlaceObstacle(const size_t pos_x, const size_t pos_y);
+            void PlaceObstacle(const long int pos_x, const long int pos_y);
 
             /**
              * @brief Stores the map area the guard is patrolling
