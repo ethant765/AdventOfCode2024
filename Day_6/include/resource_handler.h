@@ -5,6 +5,7 @@
 #include <string>
 #include <cstdint>
 #include <utility>
+#include <mutex>
 
 namespace day_six {
     /**
@@ -30,11 +31,23 @@ namespace day_six {
             void AddLineToMap(const std::string& new_map_line);
 
             /**
-             * @brief Calculates and counts the number of map positions the guard may visit
+             * @brief Counts the number of map positions the guard may visit
              * 
              * @return uint64_t 
              */
-            uint64_t CountDistinctPositions();
+            uint64_t CountDistinctPositions() const;
+
+            /**
+             * @brief Calculates and counts the number of positions loop markers can be located
+             * 
+             * @return uint64_t 
+             */
+            uint64_t CountNumberOfLoopObstacles() const;
+
+            /**
+             * @brief Handles the position predictions for the guards route
+             */
+            void PredictPositions();
             
         private:
             /**
@@ -47,11 +60,6 @@ namespace day_six {
                 LEFT,
                 UNKNOWN
             };
-            
-            /**
-             * @brief Handles the position predictions for the guards route
-             */
-            void PredictPositions();
 
             /**
              * @brief Given the guards location and facing direction, will advise if the guard can move forwards
@@ -102,6 +110,14 @@ namespace day_six {
             char GetDirectionIcon(const POSSIBLE_DIRECTIONS direction) const;
 
             /**
+             * @brief Places An obstacle at the current position, tests if it will cause a loop, and if so marks new_obstacle_map_ with that obstacle position
+             * 
+             * @param pos_x 
+             * @param pos_y 
+             */
+            void PlaceObstacle(const size_t pos_x, const size_t pos_y);
+
+            /**
              * @brief Stores the map area the guard is patrolling
              */
             std::vector<std::vector<char>> map_;
@@ -110,6 +126,16 @@ namespace day_six {
              * @brief Stores the map with the locations the guard has been to
              */
             std::vector<std::vector<char>> visited_places_map_;
+
+            /**
+             * @brief Stores the map with the locations of possible new obstacles that will create a guard route loop
+             */
+            std::vector<std::vector<char>> new_obstacle_map_;
+
+            /**
+             * @brief class mutex
+             */
+            std::mutex mutex_;
 
             /**
              * @brief Icon for locations visited
@@ -145,6 +171,12 @@ namespace day_six {
              * @brief Icon for guard facing right
              */
             const char kFacingRightMarker = '>';
+
+            /**
+             * @brief Icon showing the location of a new obstacle
+             * 
+             */
+            const char kNewObstacleMarker = 'O';
 
             /**
              * @brief Stores the current known x axis position

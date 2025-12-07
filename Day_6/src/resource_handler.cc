@@ -5,6 +5,8 @@
 #include <iostream>
 #include <cstdint>
 #include <utility>
+#include <thread>
+#include <mutex>
 
 namespace day_six {
     void ResourceHandler::AddLineToMap(const std::string& new_map_line) {
@@ -38,15 +40,15 @@ namespace day_six {
         }
 
         map_.push_back(new_line);
+        new_obstacle_map_.push_back(new_line);
         visited_places_map_.push_back(placeholder_map);
     }
 
-    uint64_t ResourceHandler::CountDistinctPositions() {
-        PredictPositions();
+    uint64_t ResourceHandler::CountDistinctPositions() const {
         uint64_t position_count = 0;
 
-        for(long int y = 0; y < visited_places_map_.size(); y++) {
-            for(long int x = 0; x < visited_places_map_[y].size(); x++) {
+        for(size_t y = 0; y < visited_places_map_.size(); y++) {
+            for(size_t x = 0; x < visited_places_map_[y].size(); x++) {
                 if(visited_places_map_[y][x] == kPlaceholderVistedMarker) {
                     position_count++;
                 }
@@ -56,13 +58,34 @@ namespace day_six {
         return position_count;
     }
 
-    void ResourceHandler::PredictPositions() {
-        bool exited_map = false;
+    uint64_t ResourceHandler::CountNumberOfLoopObstacles() const {
+        uint64_t obstacle_count = 0;
 
-        uint counter = 0;
+        for(size_t y = 0; y < new_obstacle_map_.size(); y++) {
+            for(size_t x = 0; x < new_obstacle_map_[y].size(); x++) {
+                if(new_obstacle_map_[y][x] == kNewObstacleMarker) {
+                    obstacle_count++;
+                }
+            }
+        }
+
+        return obstacle_count;
+    }
+
+    void ResourceHandler::PredictPositions() {
+        std::vector<std::thread> obstacle_prediction_threads;
+        for(size_t y = 0; y < new_obstacle_map_.size(); y++) {
+            for(size_t x = 0; x < new_obstacle_map_[y].size(); x++) {
+                std::thread thread(&ResourceHandler::PlaceObstacle, this, x, y);
+                obstacle_prediction_threads.push_back(std::move(thread));
+            }
+        }
+        for(auto& thread : obstacle_prediction_threads) {
+            thread.join();
+        }
+
+        bool exited_map = false;
         while(!exited_map) {
-            counter++;
-            //std::cout << "Loop #" << counter << ", x: " << current_pos_x << ", y: " << current_pos_y << " direction: " << current_direction << std::endl;
 
             if (CanGuardExit(current_pos_x, current_pos_y, current_direction)) {
                 exited_map = true;
@@ -84,6 +107,20 @@ namespace day_six {
             } else {
                 current_direction = RotateGuard(current_direction);
             }
+        }
+    }
+
+    void ResourceHandler::PlaceObstacle(const size_t pos_x, const size_t pos_y) {
+        if(map_[pos_y][pos_x] != kPlaceholderEmptyMarker) {
+            // location cannot hold marker
+            return;
+        }
+
+        // TODO - loop through with placed marker and test if it causes a loop
+        // if loop created, add obstacle marker to new_obstacle_map_
+        if (false /*if Obstavle would create loop*/) {
+            std::scoped_lock lock(mutex_);
+            new_obstacle_map_[pos_y][pos_x] = kNewObstacleMarker;
         }
     }
 

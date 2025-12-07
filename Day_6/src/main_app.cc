@@ -22,7 +22,9 @@ int main(int argc, char *argv[]) {
         resource_handler->AddLineToMap(file_line);
     }
 
+    resource_handler->PredictPositions();
     std::cout << "Number of distinct positions is: " << resource_handler->CountDistinctPositions() << std::endl;
+    std::cout << "Number of Obstacle locations that will cause a guard loop: " << resource_handler->CountNumberOfLoopObstacles() << std::endl;
 
     return 0;
 }
