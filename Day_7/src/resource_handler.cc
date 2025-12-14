@@ -11,7 +11,7 @@ namespace day_seven {
 
     void ResourceHandler::AddResource(const std::string& new_line) {
         input_holder_ new_input;
-        std::vector<uint32_t> new_values;
+        std::vector<uint64_t> new_values;
 
         size_t delimiter_index = new_line.find(kInputDelimiter);
         if(delimiter_index == std::string::npos) {
@@ -51,8 +51,8 @@ namespace day_seven {
         for(input_holder_ resource : resources_) {
             uint64_t additions = 0;
             bool found = false;
-            for(uint32_t v : resource.values){
-                additions += v;
+            for(uint64_t v : resource.values){
+                additions += (uint64_t)v;
             }
             if(additions == resource.total) {
                 found = true;
@@ -98,7 +98,7 @@ namespace day_seven {
 
     uint64_t ResourceHandler::GetSumFromString(const std::string& calculation) {
         size_t prev_index = 0;
-        std::vector<uint32_t> values;
+        std::vector<uint64_t> values;
         std::vector<char> operators;
 
         try {
@@ -132,8 +132,8 @@ namespace day_seven {
             for(size_t i = 0; i < operators.size(); i++) {
                 if(!no_x) {
                     if(operators[i] == kMultiplyOperator) {
-                        uint32_t val_one = values[i];
-                        uint32_t val_two = values[i + 1];
+                        uint64_t val_one = values[i];
+                        uint64_t val_two = values[i + 1];
 
                         values.erase(values.begin() + (i+1));
                         values[i] = val_one * val_two;
@@ -144,8 +144,8 @@ namespace day_seven {
                         break;
                     } 
                 } else {
-                    uint32_t val_one = values[i];
-                    uint32_t val_two = values[i + 1];
+                    uint64_t val_one = values[i];
+                    uint64_t val_two = values[i + 1];
 
                     values.erase(values.begin() + (i+1));
                     values[i] = val_one + val_two;
@@ -160,19 +160,19 @@ namespace day_seven {
 
         while(!operators.empty()) {
             if(operators[0] == kMultiplyOperator) {
-                uint32_t val_one = values[0];
-                uint32_t val_two = values[1];
+                uint64_t val_one = values[0];
+                uint64_t val_two = values[1];
 
                 values.erase(values.begin() + 1);
-                values[0] = val_one * val_two;
+                values[0] = (uint64_t)val_one * (uint64_t)val_two;
 
                 operators.erase(operators.begin());
             } else {
-                uint32_t val_one = values[0];
-                uint32_t val_two = values[1];
+                uint64_t val_one = values[0];
+                uint64_t val_two = values[1];
 
                 values.erase(values.begin() + 1);
-                values[0] = val_one + val_two;
+                values[0] = (uint64_t)val_one + (uint64_t)val_two;
 
                 operators.erase(operators.begin());
             }

@@ -15,7 +15,7 @@ namespace day_seven {
             uint64_t GetChallengeOneSum();
         private:
             struct input_holder_ {
-                std::vector<uint32_t> values;
+                std::vector<uint64_t> values;
                 uint64_t total;
             };
 
